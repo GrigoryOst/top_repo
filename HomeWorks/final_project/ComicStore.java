@@ -66,19 +66,49 @@ public class ComicStore {
     // Метод для поиска комиксов по параметрам
     public List<Comic> searchComics(String title, String author, String genre) {
         return comics.stream()
-                .filter(comic -> comic.getTitle().contains(title) && comic.getAuthor().contains(author) && comic.getGenre().contains(genre))
+                .filter(comic -> comic.getTitle().contains(title) || comic.getAuthor().contains(author) || comic.getGenre().contains(genre))
                 .collect(Collectors.toList());
+    }
+
+    public ComicStore() {
+        loadUserCredentials();
+    }
+
+    // Метод для загрузки учетных данных пользователей из файла
+    private void loadUserCredentials() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("credentials.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(":");
+                if (parts.length == 2) {
+                    userCredentials.put(parts[0], parts[1]);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Метод для сохранения учетных данных пользователя в файл
+    private void saveUserCredentials(String username, String password) {
+        try (FileWriter writer = new FileWriter("credentials.txt", true)) {
+            writer.write(username + ":" + password + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Метод для регистрации пользователя
     public void registerUser(String username, String password) {
         userCredentials.put(username, password);
+        saveUserCredentials(username, password);
     }
 
     // Метод для аутентификации пользователя
     public boolean authenticateUser(String username, String password) {
         return userCredentials.containsKey(username) && userCredentials.get(username).equals(password);
     }
+
 
     // Метод для сохранения состояния магазина в файл
     public void saveStateToFile(String filename) {

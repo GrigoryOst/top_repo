@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class ComicShopApp {
     private static ComicStore store = new ComicStore();
     private static Scanner scanner = new Scanner(System.in);
-    private static final String STORE_FILE = "comic_store.dat";
+    private static final String STORE_FILE = "comic_store.txt";
 
 
     public static void main(String[] args) {
@@ -112,7 +112,7 @@ public class ComicShopApp {
         double salePrice = scanner.nextDouble();
         System.out.print("Является ли комикс продолжением? (true/false): ");
         boolean isSequel = scanner.nextBoolean();
-        System.out.print("Общее количество на складе? (true/false): ");
+        System.out.print("Общее количество на складе?: ");
         int quantity = scanner.nextInt();
 
         Comic comic = new Comic(title, author, publisher, pageCount, genre, year, costPrice, salePrice, isSequel, quantity);
